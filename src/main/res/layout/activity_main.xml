@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:timer="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="60px"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <com.watch.timer.view.TimerTextView
+            android:id="@+id/id_hour_timer_text_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            timer:center_margin_top="3px"
+            timer:center_text_color="#ffffffff"
+            timer:center_text_size="68px"
+            timer:paint_align="left" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/colon"
+            android:textColor="#ffffff"
+            android:textSize="60px" />
+
+        <com.watch.timer.view.TimerTextView
+            android:id="@+id/id_minute_timer_text_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            timer:center_margin_top="3px"
+            timer:center_text_color="#fffb5731"
+            timer:center_text_size="68px"
+            timer:paint_align="right" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/id_start_img"
+        android:layout_width="80px"
+        android:layout_height="80px"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="98px"
+        android:contentDescription="@null"
+        android:src="@drawable/start" />
+
+</LinearLayout>
