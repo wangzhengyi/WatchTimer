@@ -3,5 +3,17 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo.Light.NoActionBar">
     </style>
+    <style name="BaseTextView">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 
+    <style name="MinuteAndSecondTextView" parent="BaseTextView">
+        <item name="android:textSize">60px</item>
+    </style>
+
+    <style name="MillisecondTextView" parent="BaseTextView">
+        <item name="android:textSize">24px</item>
+    </style>
 </resources>

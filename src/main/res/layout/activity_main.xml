@@ -1,54 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:timer="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
-    android:orientation="vertical">
+    android:background="#000000">
 
     <LinearLayout
+        android:id="@+id/id_start_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="60px"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <com.watch.timer.view.TimerTextView
-            android:id="@+id/id_hour_timer_text_view"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="60px"
             android:layout_weight="1"
-            timer:center_margin_top="3px"
-            timer:center_text_color="#ffffffff"
-            timer:center_text_size="68px"
-            timer:paint_align="left" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/colon"
-            android:textColor="#ffffff"
-            android:textSize="60px" />
+            <com.watch.timer.view.TimerTextView
+                android:id="@+id/id_hour_timer_text_view"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                timer:center_margin_top="3px"
+                timer:center_text_color="#ffffffff"
+                timer:center_text_size="68px"
+                timer:paint_align="left" />
 
-        <com.watch.timer.view.TimerTextView
-            android:id="@+id/id_minute_timer_text_view"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            timer:center_margin_top="3px"
-            timer:center_text_color="#fffb5731"
-            timer:center_text_size="68px"
-            timer:paint_align="right" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/colon"
+                android:textColor="#ffffff"
+                android:textSize="60px" />
+
+            <com.watch.timer.view.TimerTextView
+                android:id="@+id/id_minute_timer_text_view"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                timer:center_margin_top="3px"
+                timer:center_text_color="#fffb5731"
+                timer:center_text_size="68px"
+                timer:paint_align="right" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/id_start_img"
+            android:layout_width="80px"
+            android:layout_height="80px"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="98px"
+            android:contentDescription="@null"
+            android:src="@drawable/start" />
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/id_start_img"
-        android:layout_width="80px"
-        android:layout_height="80px"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="98px"
-        android:contentDescription="@null"
-        android:src="@drawable/start" />
+    <RelativeLayout
+        android:id="@+id/id_running_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
-</LinearLayout>
+        <com.watch.timer.view.TimerWatchView
+            android:id="@+id/id_timer_watch_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <RelativeLayout
+            android:id="@+id/time_text_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="100px">
+
+            <TextView
+                android:id="@+id/id_big_time_text_view"
+                style="@style/MinuteAndSecondTextView"
+                android:layout_centerHorizontal="true"
+                android:text="@string/init_big_time" />
+
+            <TextView
+                android:id="@+id/id_little_time_text_view"
+                style="@style/MillisecondTextView"
+                android:layout_alignBaseline="@id/id_big_time_text_view"
+                android:layout_toEndOf="@id/id_big_time_text_view"
+                android:text="@string/init_little_time" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="98px"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/id_close_img"
+                android:layout_width="98px"
+                android:layout_height="98px"
+                android:src="@drawable/close"
+                android:contentDescription="@null"/>
+
+            <ImageView
+                android:id="@+id/id_pause_restart_img"
+                android:layout_width="98px"
+                android:layout_height="98px"
+                android:src="@drawable/pause"
+                android:contentDescription="@null"
+                android:layout_marginStart="26px"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</FrameLayout>

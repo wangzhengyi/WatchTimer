@@ -1,0 +1,8 @@
+<resources>
+    <declare-styleable name="TimerWatchView">
+        <attr name="circle_radius" format="dimension"/>
+        <attr name="scale_line_height" format="dimension"/>
+        <attr name="scale_line_width" format="dimension"/>
+        <attr name="scale_line_color" format="dimension"/>
+    </declare-styleable>
+</resources>
