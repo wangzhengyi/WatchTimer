@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 public class TimeOutScreen extends Activity {
     private String mTimerName;
+    private TextView mDisplayTimerName;
 
 
     @Override
@@ -21,6 +22,16 @@ public class TimeOutScreen extends Activity {
         initData();
 
         initView();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        if (intent != null) {
+            mTimerName = intent.getStringExtra("timer_name");
+            if (!TextUtils.isEmpty(mTimerName)) {
+                mDisplayTimerName.setText(mTimerName);
+            }
+        }
     }
 
     private void initData() {
@@ -53,9 +64,9 @@ public class TimeOutScreen extends Activity {
             }
         });
 
-        TextView textView = (TextView) findViewById(R.id.id_timer_display_name);
+        mDisplayTimerName = (TextView) findViewById(R.id.id_timer_display_name);
         if (!TextUtils.isEmpty(mTimerName)) {
-            textView.setText(mTimerName);
+            mDisplayTimerName.setText(mTimerName);
         }
     }
 }

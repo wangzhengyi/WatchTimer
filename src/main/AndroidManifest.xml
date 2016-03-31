@@ -21,7 +21,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".TimeOutScreen"></activity>
+        <activity
+            android:name=".TimeOutScreen"
+            android:launchMode="singleTask"></activity>
     </application>
 
 </manifest>

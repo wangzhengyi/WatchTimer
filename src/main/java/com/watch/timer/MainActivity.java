@@ -1,9 +1,11 @@
 package com.watch.timer;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,6 +19,7 @@ import com.watch.timer.view.TimerWatchView;
 import java.util.List;
 
 public class MainActivity extends Activity implements TimerWatchView.WatchTimerListener{
+    private static final int REQUEST_CODE = 0x6006;
     private List<String> mHourContentList;
     private List<String> mMinuteContentList;
 
@@ -32,6 +35,10 @@ public class MainActivity extends Activity implements TimerWatchView.WatchTimerL
 
     private String mTimerName;
 
+    private boolean isInBackGround = false;
+
+    private AlarmManager mAlarmManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +49,48 @@ public class MainActivity extends Activity implements TimerWatchView.WatchTimerL
         initView();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isInBackGround) {
+            // 取消定时任务
+            isInBackGround = false;
+            PendingIntent pendingIntent = createPendingIntent();
+            pendingIntent.cancel();
+            mAlarmManager.cancel(pendingIntent);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // 使用AlarmManager定期发送通知
+        if (mTimerWatchView.isRunning()) {
+            long stopTime = mTimerWatchView.getStopTimeInFuture();
+            PendingIntent pendingIntent = createPendingIntent();
+            mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, stopTime, pendingIntent);
+            isInBackGround = true;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mTimerWatchView != null && mTimerWatchView.isRunning()) {
+            mTimerWatchView.onStop();
+        }
+        super.onDestroy();
+    }
+
+    private PendingIntent createPendingIntent() {
+        Intent intent = new Intent(MainActivity.this, TimeOutScreen.class);
+        intent.putExtra("timer_name", mTimerName);
+        PendingIntent pIntent = PendingIntent.getActivity(this, REQUEST_CODE, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        return pIntent;
+    }
+
     private void initData() {
+        mAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         mHourContentList = TimerTextUtils.getContentList(TimerTextUtils.STYLE_HOUR);
         mMinuteContentList = TimerTextUtils.getContentList(TimerTextUtils.STYLE_MINUTE);
     }
@@ -104,10 +152,7 @@ public class MainActivity extends Activity implements TimerWatchView.WatchTimerL
 
             @Override
             public void onClick(View v) {
-                mStartLayout.setVisibility(View.VISIBLE);
-                mRunningLayout.setVisibility(View.GONE);
-                mHourTextView.setSelectedPosition(0);
-                mMinuteTextView.setSelectedPosition(0);
+                mTimerWatchView.onStop();
             }
         });
         mTimerWatchView = (TimerWatchView) findViewById(R.id.id_timer_watch_view);
@@ -118,7 +163,6 @@ public class MainActivity extends Activity implements TimerWatchView.WatchTimerL
 
     @Override
     public void timerFinish() {
-        Log.e("TAG", "cacaca");
         Intent intent = new Intent(this, TimeOutScreen.class);
         intent.putExtra("timer_name", mTimerName);
         startActivity(intent);
@@ -129,6 +173,10 @@ public class MainActivity extends Activity implements TimerWatchView.WatchTimerL
     public void stop() {
         mBigTimeTv.setText(getString(R.string.init_big_time));
         mLittleTimeTv.setText(getString(R.string.init_little_time));
+        mStartLayout.setVisibility(View.VISIBLE);
+        mRunningLayout.setVisibility(View.GONE);
+        mHourTextView.setSelectedPosition(0);
+        mMinuteTextView.setSelectedPosition(0);
     }
 
     @Override

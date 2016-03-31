@@ -23,7 +23,7 @@
             android:gravity="center"
             android:textColor="#ffffff"
             android:text="@string/timer_finish"
-            android:textSize="60px" />
+            android:textSize="40px" />
 
         <ImageView
             android:id="@+id/id_start_timer_img"

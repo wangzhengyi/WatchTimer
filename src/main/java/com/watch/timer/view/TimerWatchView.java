@@ -251,9 +251,8 @@ public class TimerWatchView extends View {
         mHandler.sendMessage(mHandler.obtainMessage(MSG));
     }
 
-    /** 获取倒计时暂停状态 */
-    public boolean isPause() {
-        return mIsPause;
+    public final long getStopTimeInFuture() {
+        return mStopTimeInFuture;
     }
 
     /** 判断秒表是否正在运行 */
