@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <View
+        android:layout_width="260px"
+        android:layout_height="260px"
+        android:layout_centerInParent="true"
+        android:background="@drawable/alarm_screen_bg" />
+
+    <RelativeLayout
+        android:layout_width="380px"
+        android:layout_height="347px"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:id="@+id/id_time_finish_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:text="@string/timer_finish"
+            android:textSize="60px" />
+
+        <ImageView
+            android:id="@+id/id_start_timer_img"
+            android:layout_width="50px"
+            android:layout_height="50px"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/id_time_finish_tv"
+            android:contentDescription="@null"
+            android:src="@drawable/alarm" />
+
+        <ImageView
+            android:id="@+id/id_close_timer_img"
+            android:layout_width="50px"
+            android:layout_height="50px"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/id_time_finish_tv"
+            android:contentDescription="@null"
+            android:src="@drawable/close" />
+
+        <TextView
+            android:id="@+id/id_timer_display_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/id_time_finish_tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="26px"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:textSize="24px" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
+
