@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Timer</string>
+    <string name="app_name">倒計時</string>
     <string name="colon">:</string>
     <string name="init_big_time">00:00</string>
     <string name="init_little_time">.00</string>
-    <string name="timer_finish">Time Over</string>
+    <string name="timer_finish">計時結束</string>
 </resources>
