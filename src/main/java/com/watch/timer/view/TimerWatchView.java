@@ -22,7 +22,7 @@ public class TimerWatchView extends View {
     /**
      * 倒计时默认间隔时间.
      */
-    private static final int DEFAULT_COUNT_DOWN_INTERVAL = 1000;
+    private static final int DEFAULT_COUNT_DOWN_INTERVAL = 101;
 
     private static final float DEFAULT_CIRCLE_RADIUS = 180;
     private static final float DEFAULT_SCALE_LINE_HEIGHT = 8;

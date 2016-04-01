@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.watch.timer">
+    package="com.watch.timer"
+    android:versionCode="20160401"
+    android:versionName="1.0.0">
+
+    <uses-sdk
+        android:minSdkVersion="19"
+        android:targetSdkVersion="22" />
 
     <application
         android:allowBackup="true"
@@ -23,7 +29,7 @@
         </activity>
         <activity
             android:name=".TimeOutScreen"
-            android:launchMode="singleTask"></activity>
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>
