@@ -65,7 +65,7 @@ public class TimerWatchView extends View {
     /**
      * 倒计时停止标志
      */
-    private boolean mIsStop = false;
+    private boolean mIsStop = true;
 
     /**
      * 倒计时暂停标志
