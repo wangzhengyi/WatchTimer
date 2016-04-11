@@ -63,9 +63,14 @@ public class TimerTextView extends View {
     private float mCenterTextSize;
 
     /**
-     * 两侧文字的画笔
+     * 下方文字的画笔
      */
     private Paint mSidePaint;
+
+    /**
+     * 上方刻度的画笔
+     */
+    private Paint mScalePaint;
 
     /**
      * 两侧文字的颜色
@@ -186,8 +191,10 @@ public class TimerTextView extends View {
     }
 
     private void initPaint() {
-        mCenterPaint = createPaint(mCenterTextSize, mCenterTextColor);
-        mSidePaint = createPaint(mSideTextSize, mSideTextColor);
+        mCenterPaint = createCenterPaint(mCenterTextSize, mCenterTextColor);
+        mSidePaint = createCenterPaint(mSideTextSize, mSideTextColor);
+        mScalePaint = createScalePaint(mSideTextSize, mSideTextColor);
+
         initTouchChangeHeight();
     }
 
@@ -196,11 +203,27 @@ public class TimerTextView extends View {
         mTouchChangeHeight = fmi.ascent * -1;
     }
 
-    private Paint createPaint(float textSize, int color) {
+    private Paint createCenterPaint(float textSize, int color) {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setTextSize(textSize);
         paint.setColor(color);
         paint.setTextAlign(mPaintAlign);
+        paint.setStyle(Paint.Style.FILL);
+        return paint;
+    }
+
+    private Paint createScalePaint(float textSize, int color) {
+        Paint.Align scalePaintAlign = Paint.Align.CENTER;
+        if (mPaintAlign == Paint.Align.LEFT) {
+            scalePaintAlign = Paint.Align.RIGHT;
+        } else if (mPaintAlign == Paint.Align.RIGHT) {
+            scalePaintAlign = Paint.Align.LEFT;
+        }
+
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setTextSize(textSize);
+        paint.setColor(color);
+        paint.setTextAlign(scalePaintAlign);
         paint.setStyle(Paint.Style.FILL);
         return paint;
     }
@@ -236,8 +259,21 @@ public class TimerTextView extends View {
     private void drawScaleText(Canvas canvas) {
         if (!TextUtils.isEmpty(mScaleTextContent)) {
             float baseLineY = calculateBaseLineForTop();
-            canvas.drawText(mScaleTextContent, mCenterX, baseLineY, mSidePaint);
+            float textWidth = calculateCenterTextWidth();
+            float x = mCenterX;
+            if (mScalePaint.getTextAlign() == Paint.Align.LEFT) {
+                x = mCenterX - textWidth;
+            } else if (mScalePaint.getTextAlign() == Paint.Align.RIGHT) {
+                x = mCenterX + textWidth;
+            }
+
+            canvas.drawText(mScaleTextContent, x, baseLineY, mScalePaint);
         }
+    }
+
+    private float calculateCenterTextWidth() {
+        String centerContent = mItemList.get(mSelectedPosition);
+        return mCenterPaint.measureText(centerContent);
     }
 
     private void drawCenterText(Canvas canvas) {
