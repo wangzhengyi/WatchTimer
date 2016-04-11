@@ -208,7 +208,6 @@ public class TimerWatchView extends View {
         for (int i = 1; i <= mScaleList.size(); i ++) {
             LineDrawable lineDrawable = mScaleList.get(i % mScaleList.size());
             lineDrawable.setStrokeWidth((int) mScaleLineWidth);
-            Log.e("TAG", "i=" + i + ", scaleTime=" + (i * mScaleMillis) + ", durationTime=" + durationTime);
             if (mMillisInFuture - (i * mScaleMillis) > durationTime) {
                 lineDrawable.setColor(Color.TRANSPARENT);
             } else {
