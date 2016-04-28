@@ -18,7 +18,7 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <com.watch.timer.view.TimerTextView
+            <com.watch.timer.view.WheelView
                 android:id="@+id/id_hour_timer_text_view"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -26,7 +26,8 @@
                 timer:center_margin_top="3px"
                 timer:center_text_color="#ffffffff"
                 timer:center_text_size="68px"
-                timer:paint_align="left" />
+                timer:paint_align="left"
+                timer:show_bottom_text="false"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -36,7 +37,7 @@
                 android:textColor="#ffffff"
                 android:textSize="60px" />
 
-            <com.watch.timer.view.TimerTextView
+            <com.watch.timer.view.WheelView
                 android:id="@+id/id_minute_timer_text_view"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -44,7 +45,8 @@
                 timer:center_margin_top="3px"
                 timer:center_text_color="#fffb5731"
                 timer:center_text_size="68px"
-                timer:paint_align="right" />
+                timer:paint_align="right"
+                timer:show_bottom_text="false"/>
         </LinearLayout>
 
         <ImageView

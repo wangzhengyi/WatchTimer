@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.watch.timer.view.TimerTextUtils;
-import com.watch.timer.view.TimerTextView;
+import com.watch.timer.view.WheelView;
 import com.watch.timer.view.TimerWatchView;
 
 import java.util.List;
@@ -24,8 +24,8 @@ public class MainActivity extends Activity implements TimerWatchView.WatchTimerL
     private List<String> mMinuteContentList;
 
     private LinearLayout mStartLayout;
-    private TimerTextView mHourTextView;
-    private TimerTextView mMinuteTextView;
+    private WheelView mHourTextView;
+    private WheelView mMinuteTextView;
 
     private RelativeLayout mRunningLayout;
     private ImageView mPauseAndRestartImageView;
@@ -97,12 +97,12 @@ public class MainActivity extends Activity implements TimerWatchView.WatchTimerL
 
     private void initView() {
         mStartLayout = (LinearLayout) findViewById(R.id.id_start_layout);
-        mHourTextView = (TimerTextView) findViewById(R.id.id_hour_timer_text_view);
+        mHourTextView = (WheelView) findViewById(R.id.id_hour_timer_text_view);
         mHourTextView.setItemListAndScaleContent(mHourContentList,
                 TimerTextUtils.getScaleContent(TimerTextUtils.STYLE_HOUR));
         mHourTextView.setSelectedPosition(0);
 
-        mMinuteTextView = (TimerTextView) findViewById(R.id.id_minute_timer_text_view);
+        mMinuteTextView = (WheelView) findViewById(R.id.id_minute_timer_text_view);
         mMinuteTextView.setItemListAndScaleContent(mMinuteContentList,
                 TimerTextUtils.getScaleContent(TimerTextUtils.STYLE_MINUTE));
         mMinuteTextView.setSelectedPosition(0);
