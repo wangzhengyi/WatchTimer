@@ -84,9 +84,8 @@ public class MainActivity extends Activity implements TimerWatchView.WatchTimerL
     private PendingIntent createPendingIntent() {
         Intent intent = new Intent(MainActivity.this, TimeOutScreen.class);
         intent.putExtra("timer_name", mTimerName);
-        PendingIntent pIntent = PendingIntent.getActivity(this, REQUEST_CODE, intent,
+        return PendingIntent.getActivity(this, REQUEST_CODE, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
-        return pIntent;
     }
 
     private void initData() {
@@ -176,8 +175,8 @@ public class MainActivity extends Activity implements TimerWatchView.WatchTimerL
         mStartLayout.setVisibility(View.VISIBLE);
         mPauseAndRestartImageView.setImageResource(R.drawable.pause);
         mRunningLayout.setVisibility(View.GONE);
-        mHourTextView.setSelectedPosition(0);
-        mMinuteTextView.setSelectedPosition(0);
+        mHourTextView.setSelectedPosition(mHourTextView.getSelectedPosition());
+        mMinuteTextView.setSelectedPosition(mMinuteTextView.getSelectedPosition());
     }
 
     @Override
