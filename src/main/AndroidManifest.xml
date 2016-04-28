@@ -32,6 +32,8 @@
         </activity>
         <activity
             android:name=".TimeOutScreen"
+            android:configChanges="keyboardHidden|screenSize|orientation"
+            android:taskAffinity=":timeoutscreen"
             android:launchMode="singleTask"/>
     </application>
 
