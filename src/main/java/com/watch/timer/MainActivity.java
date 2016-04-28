@@ -174,6 +174,7 @@ public class MainActivity extends Activity implements TimerWatchView.WatchTimerL
         mBigTimeTv.setText(getString(R.string.init_big_time));
         mLittleTimeTv.setText(getString(R.string.init_little_time));
         mStartLayout.setVisibility(View.VISIBLE);
+        mPauseAndRestartImageView.setImageResource(R.drawable.pause);
         mRunningLayout.setVisibility(View.GONE);
         mHourTextView.setSelectedPosition(0);
         mMinuteTextView.setSelectedPosition(0);

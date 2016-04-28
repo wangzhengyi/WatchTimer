@@ -16,6 +16,7 @@ import com.watch.timer.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class TimerWatchView extends View {
     /**
@@ -27,10 +28,9 @@ public class TimerWatchView extends View {
     private static final float DEFAULT_SCALE_LINE_HEIGHT = 8;
     private static final float DEFAULT_SCALE_LINE_WIDTH = 2;
     private static final int DEFAULT_SCALE_LINE_COLOR = Color.parseColor("#ffffff");
-
+    private static final int MSG = 1;
     private Matrix mMatrix;
     private List<LineDrawable> mScaleList;
-
     private float mCircleRadius;
     private int mScaleLineColor;
     private float mScaleLineHeight;
@@ -38,9 +38,6 @@ public class TimerWatchView extends View {
     private int mCenterX;
     private int mCenterY;
     private boolean once;
-
-    private static final int MSG = 1;
-
     /**
      * 倒计时的总时间
      */
@@ -75,7 +72,7 @@ public class TimerWatchView extends View {
      * 每个刻度代表的毫秒数
      */
     private long mScaleMillis;
-
+    private WatchTimerListener mListener;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -99,33 +96,6 @@ public class TimerWatchView extends View {
             }
         }
     };
-
-    private void onTick(long millisLeft) {
-        //当前的记录时间(总毫秒数, 秒数, 分钟数, 小时数)
-        long mMillisecondL = millisLeft;
-        long mSecondNum = (mMillisecondL / 1000) % 60;
-        long mMinuteNum = (mMillisecondL / 1000 / 60) % 60;
-        long mHourNum = mMillisecondL / 1000 / 60 / 60;
-
-        String mSecondText = String.format("%02d", mSecondNum);
-        String mMinuteText = String.format("%02d", mMinuteNum);
-        String mHourText = mHourNum == 0 ? "" : String.format("%02d", mHourNum);
-
-        mMillisecondL = (mMillisecondL % 1000) / 10;
-        String mMillisecondText = String.format("%02d", mMillisecondL);
-
-        String mTime;
-        if ("".equals(mHourText)) {
-            mTime = mMinuteText + ":" + mSecondText;
-        } else {
-            mTime = mHourText + ":" + mMinuteText + ":" + mSecondText;
-        }
-        mMillisecondText = "." + mMillisecondText;
-        if (mListener != null) {
-            mListener.onTimeChanged(mTime, mMillisecondText);
-        }
-        postInvalidate();
-    }
 
     public TimerWatchView(Context context) {
         this(context, null);
@@ -156,6 +126,34 @@ public class TimerWatchView extends View {
         initData();
     }
 
+    private void onTick(long millisLeft) {
+        //当前的记录时间(总毫秒数, 秒数, 分钟数, 小时数)
+        long mMillisecondL = millisLeft;
+        long mSecondNum = (mMillisecondL / 1000) % 60;
+        long mMinuteNum = (mMillisecondL / 1000 / 60) % 60;
+        long mHourNum = mMillisecondL / 1000 / 60 / 60;
+
+        String mSecondText = String.format(Locale.getDefault(), "%02d", mSecondNum);
+        String mMinuteText = String.format(Locale.getDefault(), "%02d", mMinuteNum);
+        String mHourText = mHourNum == 0 ? "" :
+                String.format(Locale.getDefault(), "%02d", mHourNum);
+
+        mMillisecondL = (mMillisecondL % 1000) / 10;
+        String mMillisecondText = String.format(Locale.getDefault(), "%02d", mMillisecondL);
+
+        String mTime;
+        if ("".equals(mHourText)) {
+            mTime = mMinuteText + ":" + mSecondText;
+        } else {
+            mTime = mHourText + ":" + mMinuteText + ":" + mSecondText;
+        }
+        mMillisecondText = "." + mMillisecondText;
+        if (mListener != null) {
+            mListener.onTimeChanged(mTime, mMillisecondText);
+        }
+        postInvalidate();
+    }
+
     private void initData() {
         mMatrix = new Matrix();
         mScaleList = new ArrayList<>();
@@ -178,7 +176,7 @@ public class TimerWatchView extends View {
         PointF scaleInPointF = new PointF(mCenterX, mCenterY - mCircleRadius);
         PointF scaleExtPointF = new PointF(mCenterX, mCenterY - mCircleRadius - mScaleLineHeight);
 
-        for (int i = 0; i < 60; i ++) {
+        for (int i = 0; i < 60; i++) {
             LineDrawable lineDrawable = new LineDrawable(scaleInPointF, scaleExtPointF);
             mScaleList.add(lineDrawable);
 
@@ -204,7 +202,7 @@ public class TimerWatchView extends View {
         // 计算度过的时间
         long durationTime = mStopTimeInFuture - System.currentTimeMillis();
         // 绘制刻度
-        for (int i = 1; i <= mScaleList.size(); i ++) {
+        for (int i = 1; i <= mScaleList.size(); i++) {
             LineDrawable lineDrawable = mScaleList.get(i % mScaleList.size());
             lineDrawable.setStrokeWidth((int) mScaleLineWidth);
             if (mMillisInFuture - (i * mScaleMillis) > durationTime) {
@@ -216,7 +214,9 @@ public class TimerWatchView extends View {
         }
     }
 
-    /** 开始倒计时 */
+    /**
+     * 开始倒计时
+     */
     public synchronized final void onStart(long millisInFuture) {
         mMillisInFuture = millisInFuture;
         mCountdownInterval = DEFAULT_COUNT_DOWN_INTERVAL;
@@ -226,7 +226,9 @@ public class TimerWatchView extends View {
         mHandler.sendMessage(mHandler.obtainMessage(MSG));
     }
 
-    /** 停止倒计时 */
+    /**
+     * 停止倒计时
+     */
     public synchronized final void onStop() {
         mIsStop = true;
         mHandler.removeMessages(MSG);
@@ -235,14 +237,18 @@ public class TimerWatchView extends View {
         }
     }
 
-    /** 暂停倒计时 */
+    /**
+     * 暂停倒计时
+     */
     public synchronized final void onPause() {
         mIsPause = true;
         mPauseTime = System.currentTimeMillis();
         mHandler.removeMessages(MSG);
     }
 
-    /** 重新开始倒计时 */
+    /**
+     * 重新开始倒计时
+     */
     public synchronized final void onRestart() {
         mIsPause = false;
         mStopTimeInFuture = mStopTimeInFuture + (System.currentTimeMillis() - mPauseTime);
@@ -253,12 +259,12 @@ public class TimerWatchView extends View {
         return mStopTimeInFuture;
     }
 
-    /** 判断秒表是否正在运行 */
+    /**
+     * 判断秒表是否正在运行
+     */
     public boolean isRunning() {
         return !mIsPause && !mIsStop;
     }
-
-    private WatchTimerListener mListener;
 
     public void setWatchTimerListener(WatchTimerListener listener) {
         mListener = listener;
