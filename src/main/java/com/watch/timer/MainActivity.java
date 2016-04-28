@@ -115,10 +115,10 @@ public class MainActivity extends Activity implements TimerWatchView.WatchTimerL
                 int minute = mMinuteTextView.getSelectedPosition();
                 mTimerName = "";
                 if (hour > 0) {
-                    mTimerName += hour + "小时";
+                    mTimerName += hour + getResources().getString(R.string.hour);
                 }
                 if (minute > 0) {
-                    mTimerName += minute + "分钟";
+                    mTimerName += minute + getResources().getString(R.string.minute);
                 }
 
                 long millisInFuture = (hour * 60 + minute) * 60 * 1000;
