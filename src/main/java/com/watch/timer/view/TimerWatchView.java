@@ -54,6 +54,11 @@ public class TimerWatchView extends View {
     private long mStopTimeInFuture;
 
     /**
+     * 倒计时剩余时间
+     */
+    private long mMillisLeft;
+
+    /**
      * 倒计时暂停的时间
      */
     private long mPauseTime;
@@ -79,15 +84,16 @@ public class TimerWatchView extends View {
             synchronized (TimerWatchView.this) {
                 if (mIsStop || mIsPause) return;
 
-                final long millisLeft = mStopTimeInFuture - System.currentTimeMillis();
-                if (millisLeft <= 0) {
+                mMillisLeft = mStopTimeInFuture - System.currentTimeMillis();
+
+                if (mMillisLeft <= 0) {
                     // 倒计时结束
                     if (mListener != null) {
                         mListener.timerFinish();
                     }
                 } else {
                     long lastTickStart = System.currentTimeMillis();
-                    onTick(millisLeft);
+                    onTick(mMillisLeft);
 
                     long delay = lastTickStart + mCountdownInterval <= mStopTimeInFuture ?
                             mCountdownInterval : mStopTimeInFuture - lastTickStart;
@@ -151,7 +157,7 @@ public class TimerWatchView extends View {
         if (mListener != null) {
             mListener.onTimeChanged(mTime, mMillisecondText);
         }
-        postInvalidate();
+        invalidate();
     }
 
     private void initData() {
@@ -199,13 +205,17 @@ public class TimerWatchView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        // 计算度过的时间
-        long durationTime = mStopTimeInFuture - System.currentTimeMillis();
         // 绘制刻度
         for (int i = 1; i <= mScaleList.size(); i++) {
             LineDrawable lineDrawable = mScaleList.get(i % mScaleList.size());
             lineDrawable.setStrokeWidth((int) mScaleLineWidth);
-            if (mMillisInFuture - (i * mScaleMillis) > durationTime) {
+            /**
+             * (mMillisInFuture - mMillisLeft):倒计时目前经过的时间.
+             * mScaleMillis:代表每个刻度代表的时间.
+             * 所以 i * mScaleMillis  < (mMillisInFuture - mMillisLeft)的i都代表了目前i代表的时间已经流逝,
+             * 不需要绘制.
+             */
+            if (mMillisInFuture - mMillisLeft >= (i * mScaleMillis)) {
                 lineDrawable.setColor(Color.TRANSPARENT);
             } else {
                 lineDrawable.setColor(mScaleLineColor);
