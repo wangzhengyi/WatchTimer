@@ -179,7 +179,7 @@ public class WheelView extends View {
     /**
      * Is view scroll cyclic.
      */
-    private boolean mIsCyclic = false;
+    private boolean mIsCyclic = true;
 
     public WheelView(Context context) {
         this(context, null);
