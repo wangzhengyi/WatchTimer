@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.Vibrator;
 import android.text.TextUtils;
-import android.text.format.Time;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -88,6 +87,7 @@ public class TimeOutScreen extends Activity {
                 intent.setComponent(
                         new ComponentName("com.watch.timer", "com.watch.timer.MainActivity"));
                 startActivity(intent);
+                TimeOutScreen.this.finish();
             }
         });
 
