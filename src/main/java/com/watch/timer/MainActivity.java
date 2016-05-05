@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,6 +48,8 @@ public class MainActivity extends Activity implements TimerWatchView.WatchTimerL
         initData();
 
         initView();
+
+        getParamsFromIntent();
     }
 
     @Override
@@ -82,8 +85,7 @@ public class MainActivity extends Activity implements TimerWatchView.WatchTimerL
     }
 
     private PendingIntent createPendingIntent() {
-        Intent intent = new Intent(MainActivity.this, TimeOutScreen.class);
-        intent.putExtra("timer_name", mTimerName);
+        Intent intent = createTimeOutScreenActivity();
         return PendingIntent.getActivity(this, REQUEST_CODE, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
@@ -160,12 +162,32 @@ public class MainActivity extends Activity implements TimerWatchView.WatchTimerL
         mLittleTimeTv = (TextView) findViewById(R.id.id_little_time_text_view);
     }
 
+    private void getParamsFromIntent() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            int hour = intent.getIntExtra("timer_hour", 0);
+            int minute = intent.getIntExtra("timer_minute", 0);
+            if (hour != 0 || minute != 0) {
+                mHourTextView.setSelectedPosition(hour);
+                mMinuteTextView.setSelectedPosition(minute);
+            }
+        }
+    }
+
     @Override
     public void timerFinish() {
-        Intent intent = new Intent(this, TimeOutScreen.class);
-        intent.putExtra("timer_name", mTimerName);
+        Intent intent = createTimeOutScreenActivity();
         startActivity(intent);
         MainActivity.this.finish();
+    }
+
+    @NonNull
+    private Intent createTimeOutScreenActivity() {
+        Intent intent = new Intent(this, TimeOutScreen.class);
+        intent.putExtra("timer_name", mTimerName);
+        intent.putExtra("timer_hour", mHourTextView.getSelectedPosition());
+        intent.putExtra("timer_minute", mMinuteTextView.getSelectedPosition());
+        return intent;
     }
 
     @Override

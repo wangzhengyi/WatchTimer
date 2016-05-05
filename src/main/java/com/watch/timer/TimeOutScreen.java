@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.Vibrator;
 import android.text.TextUtils;
+import android.text.format.Time;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -20,6 +21,8 @@ import android.widget.TextView;
 public class TimeOutScreen extends Activity {
     private final String TAG = this.getClass().getSimpleName();
     private String mTimerName;
+    private int mTimerHour;
+    private int mTimerMinute;
     private TextView mDisplayTimerName;
 
     private PowerManager.WakeLock mWakeLock;
@@ -40,19 +43,15 @@ public class TimeOutScreen extends Activity {
 
     @Override
     protected void onNewIntent(Intent intent) {
-        if (intent != null) {
-            mTimerName = intent.getStringExtra("timer_name");
-            if (!TextUtils.isEmpty(mTimerName)) {
-                mDisplayTimerName.setText(mTimerName);
-            }
+        getIntentExtras(intent);
+        if (!TextUtils.isEmpty(mTimerName)) {
+            mDisplayTimerName.setText(mTimerName);
         }
     }
 
     private void initData() {
         Intent intent = getIntent();
-        if (intent != null) {
-            mTimerName = intent.getStringExtra("timer_name");
-        }
+        getIntentExtras(intent);
 
         mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mMediaPlayer = new MediaPlayer();
@@ -60,6 +59,13 @@ public class TimeOutScreen extends Activity {
                 this, RingtoneManager.TYPE_ALARM);
     }
 
+    private void getIntentExtras(Intent intent) {
+        if (intent != null) {
+            mTimerName = intent.getStringExtra("timer_name");
+            mTimerHour = intent.getIntExtra("timer_hour", 0);
+            mTimerMinute = intent.getIntExtra("timer_minute", 0);
+        }
+    }
 
     private void initView() {
         ImageView closeImg = (ImageView) findViewById(R.id.id_close_timer_img);
@@ -76,6 +82,8 @@ public class TimeOutScreen extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
+                intent.putExtra("timer_hour", mTimerHour);
+                intent.putExtra("timer_minute", mTimerMinute);
                 intent.setAction("com.ali.watch.TIMER");
                 intent.setComponent(
                         new ComponentName("com.watch.timer", "com.watch.timer.MainActivity"));
