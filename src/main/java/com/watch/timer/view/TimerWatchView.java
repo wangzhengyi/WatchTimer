@@ -88,9 +88,7 @@ public class TimerWatchView extends View {
 
                 if (mMillisLeft <= 0) {
                     // 倒计时结束
-                    if (mListener != null) {
-                        mListener.timerFinish();
-                    }
+                    onTimeFinish();
                 } else {
                     long lastTickStart = System.currentTimeMillis();
                     onTick(mMillisLeft);
@@ -263,6 +261,18 @@ public class TimerWatchView extends View {
         mIsPause = false;
         mStopTimeInFuture = mStopTimeInFuture + (System.currentTimeMillis() - mPauseTime);
         mHandler.sendMessage(mHandler.obtainMessage(MSG));
+    }
+
+    /**
+     * 倒计时结束
+     */
+    public synchronized final void onTimeFinish() {
+        mIsStop = true;
+        mIsPause = false;
+        mHandler.removeCallbacksAndMessages(null);
+        if (mListener != null) {
+            mListener.timerFinish();
+        }
     }
 
     public final long getStopTimeInFuture() {
