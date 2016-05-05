@@ -16,6 +16,9 @@ import android.view.View;
 import android.widget.Scroller;
 
 import com.watch.timer.R;
+import com.watch.timer.events.AlphaEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -472,6 +475,7 @@ public class WheelView extends View {
             isScrollingPerformed = false;
         }
         mScrollingOffset = 0;
+        EventBus.getDefault().post(new AlphaEvent());
     }
 
     /**

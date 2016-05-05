@@ -13,9 +13,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.watch.timer.events.AlphaEvent;
 import com.watch.timer.view.TimerTextUtils;
-import com.watch.timer.view.WheelView;
 import com.watch.timer.view.TimerWatchView;
+import com.watch.timer.view.WheelView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -25,6 +30,8 @@ public class MainActivity extends Activity implements TimerWatchView.WatchTimerL
     private List<String> mMinuteContentList;
 
     private LinearLayout mStartLayout;
+    private ImageView mStartImg;
+
     private WheelView mHourTextView;
     private WheelView mMinuteTextView;
 
@@ -40,6 +47,17 @@ public class MainActivity extends Activity implements TimerWatchView.WatchTimerL
 
     private AlarmManager mAlarmManager;
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void onChangeAlphaEvent(AlphaEvent event) {
+        if (mHourTextView.getSelectedPosition() != 0
+                || mMinuteTextView.getSelectedPosition() != 0) {
+            mStartImg.setImageAlpha(255);
+        } else {
+            mStartImg.setImageAlpha(125);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +68,16 @@ public class MainActivity extends Activity implements TimerWatchView.WatchTimerL
         initView();
 
         getParamsFromIntent();
+
+        registerEventBus();
+    }
+
+    private void registerEventBus() {
+        EventBus.getDefault().register(this);
+    }
+
+    private void unregisterEventBus() {
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -81,6 +109,7 @@ public class MainActivity extends Activity implements TimerWatchView.WatchTimerL
         if (mTimerWatchView != null && mTimerWatchView.isRunning()) {
             mTimerWatchView.onStop();
         }
+        unregisterEventBus();
         super.onDestroy();
     }
 
@@ -108,7 +137,8 @@ public class MainActivity extends Activity implements TimerWatchView.WatchTimerL
                 TimerTextUtils.getScaleContent(TimerTextUtils.STYLE_MINUTE));
         mMinuteTextView.setSelectedPosition(0);
 
-        ImageView mStartImg = (ImageView) findViewById(R.id.id_start_img);
+        mStartImg = (ImageView) findViewById(R.id.id_start_img);
+        mStartImg.setImageAlpha(125);
         mStartImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
