@@ -209,6 +209,7 @@ public class MainActivity extends Activity implements TimerWatchView.WatchTimerL
             if (hour != 0 || minute != 0) {
                 mHourTextView.setSelectedPosition(hour);
                 mMinuteTextView.setSelectedPosition(minute);
+                mStartImg.setImageAlpha(255);
             }
         }
     }
