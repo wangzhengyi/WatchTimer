@@ -5,5 +5,7 @@
     <string name="init_little_time">.00</string>
     <string name="timer_finish">計時結束</string>
     <string name="hour">小時</string>
+    <string name="hours">小時</string>
     <string name="minute">分鐘</string>
+    <string name="minutes">分鐘</string>
 </resources>
